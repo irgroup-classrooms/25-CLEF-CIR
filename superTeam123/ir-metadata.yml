@@ -1,0 +1,66 @@
+tag: query_expansion_time_dependence
+
+actor:
+  team: YourTeamNameHere
+
+research goal:
+  description: |
+    Das Ziel dieses Systems ist es, das Verhalten von Informations-Retrieval-Systemen (IR-Systemen) zu analysieren, 
+    wenn sich die zugrundeliegende Dokumentensammlung im Zeitverlauf verändert. 
+    Dabei wird untersucht, wie sich Veränderungen in Dokumenten und Nutzerverhalten auf die Suchergebnisse auswirken 
+    und wann es notwendig ist, das IR-System zu aktualisieren, um eine hohe Qualität der Ergebnisse sicherzustellen.
+
+    Das System erzeugt für mehrere fest definierte Zeitpunkte Runs, eine Ergebnisliste, 
+    die für eine festgelegte Menge von Anfragen (Queries) ermittelt wird, basierend auf dem zu diesem Zeitpunkt aktuellen Dokumentenbestand. 
+    Diese Runs dienen dazu, die zeitliche Stabilität und Performance des Systems zu bewerten.
+
+    Die Analyse nutzt die LongEval-Datensätze, die speziell dafür entwickelt wurden, die Veränderungen in der Dokumenten- und Nutzerlandschaft über die Zeit abzubilden. 
+    Das System kombiniert klassische IR-Methoden wie BM25 mit modernen neuronalen Modellen (z.B. GPT-4o von OpenAI), 
+    um für jede Query einen Zeitabhängigkeits-Score zu berechnen. Dieser Score gibt an, wie stark die Relevanz einer Anfrage von zeitlichen Veränderungen beeinflusst wird.
+
+    Die Ergebnisse werden in Form von CSV-Dateien gespeichert und können dazu verwendet werden, 
+    bessere, zeitlich adaptive Retrieval-Strategien zu entwickeln, die sich dynamisch an Veränderungen der Dokumentensammlung und Nutzerbedürfnisse anpassen.
+
+platform:
+  software:
+    libraries:
+      - PyTerrier
+      - SQLAlchemy
+      - pandas
+      - numpy
+      - openai
+      - psycopg2
+      - os (Standard Python Library)
+      - Python 3.x
+
+implementation:
+  source:
+    repository: https://github.com/yourusername/your-repo-name
+
+data:
+  training data:
+    - name: longeval-web
+    - name: longeval-sci
+
+method:
+  automatic: true
+
+  indexing:
+    tokenizer: PyTerrier default (Anserini tokenizer)
+    stemmer: Porter
+    stopwords: SMART
+
+  retrieval:
+    - name: bm25
+      lexical: yes
+      deep_neural_model: no
+      sparse_neural_model: no
+      dense_neural_model: no
+      single_stage_retrieval: yes
+
+    - name: gpt-4o_time_dependence_scoring
+      lexical: no
+      deep_neural_model: yes
+      sparse_neural_model: no
+      dense_neural_model: yes
+      single_stage_retrieval: no
